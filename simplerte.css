@@ -8,7 +8,7 @@
 .html {
 	font-family: monospace;
 	background-color: hsl(0, 0%, 96%);
-	overflow:none;
+	word-wrap: break-word;
 }
 
 .styled h1 {
@@ -17,5 +17,5 @@
 
 .styled {
     font-family: 'Merriweather Regular', serif;
-    overflow:none;
+    word-wrap: break-word;
 }
