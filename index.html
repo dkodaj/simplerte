@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="simplerte.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+</head>
+<body>
+	
+	<script src="SimpleRTE.js"></script>
+	
+	<div id='elm'></div>
+	
+	<script>	
+	
+		function editCmd(command, param){
+			var editable = document.getElementById('editable');
+			if (editable) {
+				document.execCommand(command, false, param);
+			}
+		}			
+		
+		var app = Elm.SimpleRTE.init({
+			node : document.getElementById('elm')
+		});				
+			
+		app.ports.format.subscribe(function(command){
+			editCmd(command)
+		});
+		
+		app.ports.formatBlock.subscribe(function(nodeType){
+			editCmd("formatBlock", nodeType);
+		});
+		
+		app.ports.insertLink.subscribe(function(whatever){
+			var link = prompt('Link URL:','');
+			if (link && link != '') {
+				document.execCommand("createlink", false, link);				
+			}
+		});
+
+		window.addEventListener("input", function(event){
+			if (event.target.id === "editable") {
+				app.ports.edited.send(document.getElementById("editable").innerHTML);				
+			}
+		});
+		
+		window.addEventListener("keydown", function(e) {		  		   
+		  if (e.key === "b" && e.ctrlKey) {
+		    editCmd('bold')
+		    e.preventDefault();
+		  }
+		  
+		  if (e.key === "i" && e.ctrlKey) {
+		    editCmd('italic')
+		    e.preventDefault();
+		  }
+		  
+		  if (e.key === "u" && e.ctrlKey) {
+		    editCmd('underline')
+		    e.preventDefault();
+		  }		  
+		  
+		  if (e.key === "z" && e.ctrlKey) {
+		    editCmd('undo')
+		    e.preventDefault();
+		  }
+		
+		});				
+		
+	
+
+	</script>
+	
+</body>
+</html>

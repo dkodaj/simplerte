@@ -1,0 +1,21 @@
+
+.editorBarStyle {
+	width: 700px;
+	display: inline;
+	margin-left: -5px;
+}
+
+.html {
+	font-family: monospace;
+	background-color: hsl(0, 0%, 96%);
+	max-width: 700px;
+}
+
+.styled h1 {
+	font-size:55px;	
+}
+
+.styled {
+    font-family: 'Merriweather Regular', serif;
+    max-width: 700px;
+}
