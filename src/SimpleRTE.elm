@@ -6,6 +6,7 @@ import Html.Attributes as Attr exposing (class)
 import Html.Events exposing (onClick)
 import ParseHtml.Parse as ParseHtml
 
+
 main =
     Browser.document
         { init = init
@@ -22,7 +23,7 @@ type alias Model =
 
 
 type Msg
-    = Bold  
+    = Bold
     | Edited String
     | FormatBlock String
     | InsertLink
@@ -42,26 +43,29 @@ subscriptions model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    let cucu = Debug.log "model" model in
+    let
+        cucu =
+            Debug.log "model" model
+    in
     case msg of
         Bold ->
-             ( model, format "bold")
-            
+            ( model, format "bold" )
+
         Edited html ->
             ( { model | updatedHtml = html }, Cmd.none )
 
         FormatBlock nodeType ->
             ( model, formatBlock nodeType )
-            
+
         InsertLink ->
             ( model, insertLink True )
-            
+
         Italic ->
             ( model, format "italic" )
-            
+
         Unlink ->
             ( model, format "unlink" )
-            
+
 
 view : Model -> Browser.Document Msg
 view model =
@@ -70,13 +74,14 @@ view model =
     }
 
 
+
 --=== HELPERS
 
 
 body : Model -> List (Html Msg)
 body model =
     [ div
-        [ Attr.style "width" "700px" 
+        [ Attr.style "width" "700px"
         , Attr.style "margin" "10px 0 0 50px"
         ]
         [ toolbar
@@ -84,11 +89,11 @@ body model =
         , div
             [ Attr.style "margin-top" "30px"
             ]
-            [ Html.b 
-                [ class "has-text-info" 
+            [ Html.b
+                [ class "has-text-info"
                 , Attr.style "font-size" "1.25em"
-                ] 
-                [ text "InnerHTML:" ] 
+                ]
+                [ text "InnerHTML:" ]
             ]
         , div
             [ Attr.style "margin-top" "15px"
@@ -97,11 +102,11 @@ body model =
             [ text model.updatedHtml ]
         , div
             [ Attr.style "margin-top" "20px" ]
-            [ Html.b 
-                [ class "has-text-info" 
+            [ Html.b
+                [ class "has-text-info"
                 , Attr.style "font-size" "1.25em"
-                ] 
-                [ text "Rendered from Elm (not editable):" ] 
+                ]
+                [ text "Rendered from Elm (not editable):" ]
             ]
         , div
             [ Attr.style "margin-top" "5px"
@@ -109,16 +114,16 @@ body model =
             ]
             [ ParseHtml.do model.updatedHtml ]
         , div
-            [ Attr.style "margin" "15px auto" 
+            [ Attr.style "margin" "15px auto"
             , Attr.style "font-family" "monospace"
             , Attr.style "font-size" "1.25em"
             , Attr.style "font-weight" "bold"
             , Attr.style "text-align" "center"
             ]
             [ text "< "
-            , Html.a 
+            , Html.a
                 [ Attr.href "https://github.com/dkodaj/simplerte" ]
-                [ text "code" ] 
+                [ text "code" ]
             , text " >"
             ]
         ]
@@ -130,7 +135,7 @@ editable innerHtml =
     div
         [ Attr.id "editable"
         , Attr.contenteditable True
-        , class "styled"        
+        , class "styled"
         ]
         [ ParseHtml.do innerHtml ]
 
@@ -146,7 +151,10 @@ editorButton iconClass title msg =
         [ icon iconClass ]
 
 
+
 -- Font Awesome icon
+
+
 icon : String -> Html a
 icon faClass =
     Html.span
@@ -156,6 +164,7 @@ icon faClass =
             []
         ]
 
+
 sampleContent : String
 sampleContent =
     "<h1>Edit this</h1><p>Or this. Lorem ipsum dolor sit amet, consectetur adipisicing elit.<p>"
@@ -164,8 +173,8 @@ sampleContent =
 toolbar : Html Msg
 toolbar =
     div
-        [ class "editorBarStyle" 
-        ]        
+        [ class "editorBarStyle"
+        ]
         [ editorButton "fas fa-bold" "Bold" Bold
         , editorButton "fas fa-italic" "Italic" Italic
         , editorButton "fas fa-link" "Link" InsertLink
@@ -174,20 +183,21 @@ toolbar =
         , editorButton "fas fa-paragraph" "Plain text paragraph" (FormatBlock "<div>")
         ]
 
---== PORTS ==--
 
+
+--== PORTS ==--
 --from JavaScript to Elm
 
 port edited : (String -> msg) -> Sub msg
+
 
 
 --from Elm to JavaScript
 
 port format : String -> Cmd msg
 
+
 port formatBlock : String -> Cmd msg
 
+
 port insertLink : Bool -> Cmd msg
-
-
-

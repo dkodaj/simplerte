@@ -34,19 +34,16 @@ type alias Tags =
     List Tag
 
 
-
---- CALIBRATORS
-
 allowedAttributes =
-    [ "class", "href", "src" ]
+    [ "class", "href", "src" ] --all other attributes are ignored
 
 
 skipThese =
-    [ "font" ]
+    [ "font" ] --these tags are ignored
 
 
 deleteThese =
-    [ "style" ]
+    [ "style" ] --these tags, together with their content, are removed - rendering them in Elm is a pain
 
 
 do : String -> Html msg
@@ -312,8 +309,8 @@ fixEntities txt =
 
 grabTags : String -> Tags
 grabTags txt =
--- find <a href="xxx"> type strings
--- turn them into list of (""a",[("href","xxx")])
+    -- find <a href="xxx"> type strings
+    -- turn them into list of (""a",[("href","xxx")])
     let
         begs =
             tagBegs txt
@@ -363,7 +360,6 @@ identify txt tag =
 
         checkers =
             map toAttr allowedAttributes
-            
 
         reverseMap xs f =
             concat <| map f xs
@@ -422,7 +418,6 @@ matryoshkaRecursion output toCheck =
             output
 
 
-
 numTagsBetween : Int -> Int -> String -> Tags -> Int
 numTagsBetween a b tagType tags =
     let
@@ -443,6 +438,7 @@ removeNothings xs =
                     [ y ]
     in
     List.concat <| List.map remover xs
+
 
 tagBegs : String -> List Int
 tagBegs txt =
