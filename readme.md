@@ -1,5 +1,5 @@
 # V simple rich text editor in Elm
 
-Creates a contenteditable div and leaves it alone. The downside is that it may not work in all browsers (it uses [execCommand](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand#Browser_compatibility))
+Creates a contenteditable div and updates the Elm model via ports.
 
-Check out the [live version](https://dkodaj.github.io/simplerte).
+**Warning**: Uses execCommand, which has been [deprecated](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand). While it lasts, you can check out the [live version](https://dkodaj.github.io/simplerte).
